@@ -1,0 +1,42 @@
+{
+	"schemaVersion": 1,
+	"id": "ynofish",
+	"version": "${version}",
+	"name": "YnoFish",
+	"description": "Ynovka's mod! Powered by: Linguardium. This mod fishes for you!",
+	"authors": [
+		"Ynovka",
+		"Linguardium"
+	],
+	"contact": {
+		"discord": "ynovka",
+		"sources": "https://github.com/rikirrr/YnoFish"
+	},
+	"license": "MIT",
+	"icon": "assets/titleeventexample/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+          "mod.ynovka.autoLiteFish.TitleEventExample"
+		],
+		"client": [
+			"mod.ynovka.autoLiteFish.TitleEventExampleClient"
+		]
+	},
+	"mixins": [
+		"titleeventexample.mixins.json",
+		{
+			"config": "titleeventexample.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.7",
+		"minecraft": "~1.20.4",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
