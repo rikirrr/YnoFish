@@ -16,10 +16,17 @@ public class TitleEventExampleClient implements ClientModInitializer {
 				// MinecraftClient.getInstance().player.sendMessage(text);
 				// System.out.println(text);
 				String Content = text.toString();
-				if (Content.contains("5DD339") || Content.contains("5488D6")) {
+				if (Content.contains("4CB5B6") ||Content.contains("5DD339") || Content.contains("739F60") || Content.contains("5488D6") || Content.contains("4CAF99") || Content.contains("A58F4C") || Content.contains("7DA7CA") || Content.contains("FFFFFF") || Content.contains("FFE58A")) {
 					int count1 = Content.split("5DD339", -1).length - 1;
 					int count2 = Content.split("5488D6", -1).length - 1;
-					if (count1 == 2 || count2 == 2) {
+					int count3 = Content.split("FFFFFF", -1).length - 1;
+					int count4 = Content.split("FFE58A", -1).length - 1;
+					int count5 = Content.split("7DA7CA", -1).length - 1;
+					int count6 = Content.split("A58F4C", -1).length - 1;
+					int count7 = Content.split("4CAF99", -1).length - 1;
+					int count8 = Content.split("739F60", -1).length - 1;
+					int count9 = Content.split("4CB5B6", -1).length - 1;
+					if (count9 == 2 || count1 == 2 || count2 == 2 || count8 == 2 || count3 == 2 || count7 == 2 || count4 == 2 || count5 == 2 || count6 == 2) {
 						Hand hand = Hand.MAIN_HAND;
                         assert MinecraftClient.getInstance().interactionManager != null;
                         ActionResult actionResult = MinecraftClient.getInstance().interactionManager.interactItem(MinecraftClient.getInstance().player, hand);
@@ -34,8 +41,10 @@ public class TitleEventExampleClient implements ClientModInitializer {
 					}
 				}
 				else {
+					System.out.println(Content);
+
 					try {
-						Thread.sleep(500); // 1000 миллисекунд = 1 секунда
+						Thread.sleep(300); // 1000 миллисекунд = 1 секунда
 						System.out.println(Content);
 						Hand hand = Hand.MAIN_HAND;
 						assert MinecraftClient.getInstance().interactionManager != null;
