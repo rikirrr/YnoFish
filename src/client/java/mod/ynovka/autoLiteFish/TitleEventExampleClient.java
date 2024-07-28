@@ -6,60 +6,74 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 
+import java.util.HashSet;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class TitleEventExampleClient implements ClientModInitializer {
+	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+	private boolean isCatched = false;
+
 	@Override
 	public void onInitializeClient() {
 		// Register a callback for the event. every time the event fires, it runs the method that you register
 		TitleMessageEvents.SET_TITLE.register((text, isSubTitle) -> {
 			// if the title being set is not a subtitle, and the player exists, add the title to the chat hud
 			if (!isSubTitle && MinecraftClient.getInstance().player != null) {
-				// MinecraftClient.getInstance().player.sendMessage(text);
-				// System.out.println(text);
-				String Content = text.toString();
-				if (Content.contains("4CB5B6") ||Content.contains("5DD339") || Content.contains("739F60") || Content.contains("5488D6") || Content.contains("4CAF99") || Content.contains("A58F4C") || Content.contains("7DA7CA") || Content.contains("FFFFFF") || Content.contains("FFE58A")) {
-					int count1 = Content.split("5DD339", -1).length - 1;
-					int count2 = Content.split("5488D6", -1).length - 1;
-					int count3 = Content.split("FFFFFF", -1).length - 1;
-					int count4 = Content.split("FFE58A", -1).length - 1;
-					int count5 = Content.split("7DA7CA", -1).length - 1;
-					int count6 = Content.split("A58F4C", -1).length - 1;
-					int count7 = Content.split("4CAF99", -1).length - 1;
-					int count8 = Content.split("739F60", -1).length - 1;
-					int count9 = Content.split("4CB5B6", -1).length - 1;
-					if (count9 == 2 || count1 == 2 || count2 == 2 || count8 == 2 || count3 == 2 || count7 == 2 || count4 == 2 || count5 == 2 || count6 == 2) {
-						Hand hand = Hand.MAIN_HAND;
-                        assert MinecraftClient.getInstance().interactionManager != null;
-                        ActionResult actionResult = MinecraftClient.getInstance().interactionManager.interactItem(MinecraftClient.getInstance().player, hand);
-						if (actionResult.isAccepted()) {
-							if (actionResult.shouldSwingHand()) {
-								MinecraftClient.getInstance().player.swingHand(hand);
-							}
-							MinecraftClient.getInstance().gameRenderer.firstPersonRenderer.resetEquipProgress(hand);
-						}
-						System.out.println("ПКМ!");
-						MinecraftClient.getInstance().player.sendMessage(Text.of("ПКМ!"));
-					}
+
+				// get bar content
+				String Content;
+				if (text.toString().length() > 115 + 88) {
+					Content = text.toString().substring(115, text.toString().length() - 88);
 				}
 				else {
-					System.out.println(Content);
+					Content = text.toString();
+				}
 
-					try {
-						Thread.sleep(300); // 1000 миллисекунд = 1 секунда
-						System.out.println(Content);
-						Hand hand = Hand.MAIN_HAND;
-						assert MinecraftClient.getInstance().interactionManager != null;
-						ActionResult actionResult = MinecraftClient.getInstance().interactionManager.interactItem(MinecraftClient.getInstance().player, hand);
-						if (actionResult.isAccepted()) {
-							if (actionResult.shouldSwingHand()) {
-								MinecraftClient.getInstance().player.swingHand(hand);
-							}
-							MinecraftClient.getInstance().gameRenderer.firstPersonRenderer.resetEquipProgress(hand);
-						}
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+				// Регулярное выражение для поиска всех значений color
+				String regex = "color=#([A-Fa-f0-9]{6})";
+				Pattern pattern = Pattern.compile(regex);
+				Matcher matcher = pattern.matcher(Content);
+
+				// Используем HashSet для хранения уникальных значений color
+				HashSet<String> colors = new HashSet<>();
+
+				// Проходим по всем совпадениям и добавляем их в HashSet
+				while (matcher.find()) {
+					colors.add(matcher.group(1));
+				}
+
+				// Если в миниигре 2 цвета, значит нужно нажать ПКМ
+				if (colors.size() == 2) {
+					System.out.println("catch! using rod.");
+					UseRod();
+					if (!isCatched) {
+						isCatched = true;
 					}
+				}
+				else if (isCatched && colors.size() != 3) {
+					System.out.println("game finished, wait 300 millis to use rod.");
+					scheduler.schedule(this::UseRod, 300, TimeUnit.MILLISECONDS);
+				}
+				else {
+					System.out.println("Not Game!");
 				}
 			}
 		});
+	}
+
+	private void UseRod() {
+		Hand hand = Hand.MAIN_HAND;
+		assert MinecraftClient.getInstance().interactionManager != null;
+		ActionResult actionResult = MinecraftClient.getInstance().interactionManager.interactItem(MinecraftClient.getInstance().player, hand);
+		if (actionResult.isAccepted()) {
+			if (actionResult.shouldSwingHand()) {
+				MinecraftClient.getInstance().player.swingHand(hand);
+			}
+			MinecraftClient.getInstance().gameRenderer.firstPersonRenderer.resetEquipProgress(hand);
+		}
 	}
 }
