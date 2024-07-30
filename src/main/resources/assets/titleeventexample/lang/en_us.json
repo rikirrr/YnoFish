@@ -1,0 +1,8 @@
+{
+  "title.autolitefish.config": "YnoFish Config",
+  "category.autolitefish.general": "General",
+  "option.autolitefish.autoFishEnabled": "Enable Auto Fishing",
+  "tooltip.autolitefish.autoFishEnabled": "Toggle auto fishing feature",
+  "option.autolitefish.sendFeedbackEnabled": "Send Feedback",
+  "tooltip.autolitefish.sendFeedbackEnabled": "Toggle feedback sending feature"
+}

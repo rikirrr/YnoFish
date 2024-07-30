@@ -1,0 +1,8 @@
+{
+  "title.autolitefish.config": "Настройки YnoFish",
+  "category.autolitefish.general": "Основные настройки",
+  "option.autolitefish.autoFishEnabled": "Авто-рыбалка",
+  "tooltip.autolitefish.autoFishEnabled": "Включает/выключает функцию авто-рыбалки",
+  "option.autolitefish.sendFeedbackEnabled": "Отправлять статистику",
+  "tooltip.autolitefish.sendFeedbackEnabled": "Включает/выключает отправку статистики"
+}
